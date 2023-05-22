@@ -1,0 +1,40 @@
+There are three solution file for three questions
+Assignment No 1.
+It has 4 menus . add student,view all,search and delete
+add student- takes input for student_no,surname,name and unitmark and add to list of dictionary.duplicate student of same number cannot be added
+viewall- list all the students- displays grading as per Murdoch University's grade system
+search - search student on basis of student no  or student name
+delete - deletes student of entered no
+quit- quits program
+
+Assignment no 2.
+It has 6 menus - add student, view all, search,delete, load student,save students
+add student- same as no 1
+view all - same as no 1
+search - same as no 1
+delete - same as no 1
+load student - user can input the csv file location (eg: students.csv). if file do not exists it throw as error else it loads all students to dictionary.
+		duplicate students are ignored
+save students - user can input the file location (eg: student_data.csv). if file already exist it give three option ( change file name,overwrite file,cancel).and file gets saved in csv format
+
+assignment no 3
+it has 8 menus -add student, view all, search,delete, load student,save students, show grade distribution, show mark distribution
+
+here instead of dictionary python ndarray has been used to store students.
+add student- same as no 2
+view all - same as no 2
+search - same as no 2
+delete - same as no 2
+laod student - same as no 2
+save student - same as no2
+grade distribution - show pie chart representation of grades
+mark distirbution- show bar chart of marks
+
+you can use student_marks.csv file to load students
+IMPORTANT: Assignement 3 use numpy and matplotlib library so you need to install them to run it
+
+use cmd and locate the script folder of python .. in windows it is in C:\Users\LocalUser\AppData\Local\Programs\Python\Python311\Scripts the location
+run the following command in cmd
+cd C:\Users\LocalUser\AppData\Local\Programs\Python\Python311\Scripts
+pip install matplotlib
+pip install numpy
