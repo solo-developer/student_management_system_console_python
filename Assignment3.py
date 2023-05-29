@@ -46,20 +46,25 @@ def add_student():
     global student_data
   
     new_student =[]
-    for field in student_fields:
-        value = input("Enter " + field + ": ")
-        new_student.append(value)
-    
-    for row in student_data:
-        if len(row) > 0 and new_student[0] == row[0]:
-               print("Student with Number :("+new_student[0]+")already exist")
-               input("Press any key to continue")
-               return
+    try:
+        for field in student_fields:
+            value = input("Enter " + field + ": ")
+            new_student.append(value)
 
-    student_data =np.append(student_data, np.array([new_student]), axis=0)
-    print("Data saved successfully")
-    input("Press any key to continue")
-    return
+        if len(new_student[0]) >0 and not new_student[3].isnumeric():
+                   raise Exception("Unit marks should be in numeric form")
+        for row in student_data:
+            if len(row) > 0 and new_student[0] == row[0]:
+                   raise Exception("Student with Number :("+new_student[0]+")already exist")
+                   
+
+        student_data =np.append(student_data, np.array([new_student]), axis=0)
+        print("Data saved successfully")
+        input("Press any key to continue")
+        return
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
+ 
  
  
 def view_students():
@@ -68,17 +73,19 @@ def view_students():
  
     print("--- Student Records ---")
  
+    try:
+        for x in student_fields:
+            print(x, end='\t |')
+        print("\n-----------------------------------------------------------------")
 
-    for x in student_fields:
-        print(x, end='\t |')
-    print("\n-----------------------------------------------------------------")
-
-    for row in student_data:
-        grade = get_grade(row[3])
-        print(row[0], '\t |',row[1], '\t |',row[2], '\t |',grade)
-        print("\n")
- 
-    input("Press any key to continue")
+        for row in student_data:
+            grade = get_grade(row[3])
+            print(row[0], '\t |',row[1], '\t |',row[2], '\t |',grade)
+            print("\n")
+     
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
  
  
 def search_student():
@@ -88,25 +95,27 @@ def search_student():
     search_result = np.empty((0,4), str)
     print("--- Search Student ---")
     search = input("Enter Student Number /Name to search: ")
-   
-    for row in student_data:
-        if len(row) > 0:
-            if search == row[0] or re.search(search, row[2], re.IGNORECASE):
-               search_result = np.append(search_result, np.array([row]), axis=0)
+    try:
+        for row in student_data:
+            if len(row) > 0:
+                if search == row[0] or re.search(search, row[2], re.IGNORECASE):
+                   search_result = np.append(search_result, np.array([row]), axis=0)
 
 
-    if len(search_result)>0:
-           for x in student_fields:
-               print(x, end='\t |')
-           print("\n-----------------------------------------------------------------")
+        if len(search_result)>0:
+               for x in student_fields:
+                   print(x, end='\t |')
+               print("\n-----------------------------------------------------------------")
 
-           for row in search_result:
-              grade = get_grade(row[3])
-              print(row[0], '\t |',row[1], '\t |',row[2], '\t |',grade)
-           print("\n")
-    else:
-          print("student of given number/name not found")
-    input("Press any key to continue")
+               for row in student_data:
+                  grade = get_grade(row[3])
+                  print(row[0], '\t |',row[1], '\t |',row[2], '\t |',grade)
+               print("\n")
+        else:
+              print("student of given number/name not found")
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
  
  
 def delete_student():
@@ -115,66 +124,75 @@ def delete_student():
     print("--- Delete Student ---")
     student_no = input("Enter student no. to delete: ")
     student_found = False
-    counter =0
-    for item in student_data:
-        if len(student_data) > 0:
-           counter +=1
-           if item[0]== student_no:
-              student_data =np.delete(student_data, counter-1, 0)
-              student_found = True
-              break
- 
-    if student_found is True:
-       print("Student of Student No:", student_no, "deleted successfully")
-    else:
-       print("Student. not found")
- 
-    input("Press any key to continue")
+    try:
+        counter =0
+        for item in student_data:
+            if len(student_data) > 0:
+               counter +=1
+               if item[0]== student_no:
+                  student_data =np.delete(student_data, counter-1, 0)
+                  student_found = True
+                  break
+     
+        if student_found is True:
+           print("Student of Student No:", student_no, "deleted successfully")
+        else:
+           print("Student. not found")
+     
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
 
 
 def load_students():
     global student_data
     file = input("enter file location of csv file: ")
-    is_file_exists= os.path.isfile(file)
-    if not is_file_exists:
-        print("file does not exists")
+    try:
+        is_file_exists= os.path.isfile(file)
+        if not is_file_exists:
+            raise Exception("file does not exists")
+            
+        
+        with open(file,"r", encoding="utf-8") as f:
+              reader = csv.reader(f)
+              for  row in reader:
+                   if  not row[0].isnumeric():
+                       continue
+                   if  any(student[0] == row[0] for student in student_data):
+                       continue   
+                   student_data =np.append(student_data, np.array([row]), axis=0)
+        print("Students loaded successfully")
         input("Press any key to continue")
-        return
-    
-    with open(file,"r", encoding="utf-8") as f:
-          reader = csv.reader(f)
-          for  row in reader:
-               if  not row[0].isnumeric():
-                   continue
-               if  any(student[0] == row[0] for student in student_data):
-                   continue   
-               student_data =np.append(student_data, np.array([row]), axis=0)
-    print("Students loaded successfully")
-    input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
        
 
 def save_students():
     file = input("enter file location of csv file to save students: ")
-    is_file_exists= os.path.isfile(file)
-    if is_file_exists:
-        print("----File already exists---")
-        print("1. Change File Name")
-        print("2. OverWrite File")
-        print("3. Cancel")
+    try:
+        is_file_exists= os.path.isfile(file)
+        if is_file_exists:
+            print("----File already exists---")
+            print("1. Change File Name")
+            print("2. OverWrite File")
+            print("3. Cancel")
 
-        choice = input("Enter Choice: ")
-        if choice =='1':
-           save_students()
-           
-        elif choice == '2':
-            save_data(file,"w")
-            return
-        else:
-            return
+            choice = input("Enter Choice: ")
+            if choice =='1':
+               save_students()
+               return
+               
+            elif choice == '2':
+                save_data(file,"w")
+                return
+            else:
+                return
 
-    save_data(file,"a")
-    input("Press any key to continue")
-    return
+        save_data(file,"a")
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
+    
 
 def save_data(filepath,mode):
     global student_fields

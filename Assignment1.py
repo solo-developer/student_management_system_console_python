@@ -35,22 +35,28 @@ def add_student():
     print("-------------------------")
     global student_fields
     global student_data
-  
-    new_student ={}
-    for field in student_fields:
-        value = input("Enter " + field + ": ")
-        new_student[field] =value
-    
-    for row in student_data:
-        if len(row) > 0 and new_student["Number"] == row["Number"]:
-               print("Student with Number :("+new_student["Number"]+")already exist")
-               input("Press any key to continue")
-               return
+    try:
+        new_student ={}
+        for field in student_fields:
+            value = input("Enter " + field + ": ")
+            new_student[field] =value
 
-    student_data.append(new_student)
-    print("Data saved successfully")
-    input("Press any key to continue")
-    return
+
+        if len(new_student["UnitMark"]) >0 and not new_student["UnitMark"].isnumeric():
+                   raise Exception("Unit marks should be in numeric form")
+                   
+        for row in student_data:
+            print(new_student["UnitMark"])
+            if len(row) > 0 and new_student["Number"] == row["Number"]:
+                   raise Exception("Student with Number :("+new_student["Number"]+")already exist")
+            
+
+        student_data.append(new_student)
+        print("Data saved successfully")
+        input("Press any key to continue")
+        return
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
  
  
 def view_students():
@@ -59,17 +65,20 @@ def view_students():
  
     print("--- Student Records ---")
  
+    try:
+        for x in student_fields:
+            print(x, end='\t |')
+        print("\n-----------------------------------------------------------------")
 
-    for x in student_fields:
-        print(x, end='\t |')
-    print("\n-----------------------------------------------------------------")
-
-    for row in student_data:
-        grade = get_grade(row["UnitMark"])
-        print(row["Number"], '\t |',row["SurName"], '\t |',row["Name"], '\t |',grade)
-        print("\n")
+        for row in student_data:
+            grade = get_grade(row["UnitMark"])
+            print(row["Number"], '\t |',row["SurName"], '\t |',row["Name"], '\t |',grade)
+            print("\n")
+     
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
  
-    input("Press any key to continue")
  
  
 def search_student():
@@ -79,25 +88,28 @@ def search_student():
     search_result =[]
     print("--- Search Student ---")
     search = input("Enter Student Number /Name to search: ")
-   
-    for row in student_data:
-        if len(row) > 0:
-            if search == row["Number"] or re.search(search, row["Name"], re.IGNORECASE):
-               search_result.append(row)
+    try:
+        for row in student_data:
+            if len(row) > 0:
+                if search == row["Number"] or re.search(search, row["Name"], re.IGNORECASE):
+                   search_result.append(row)
 
 
-    if len(search_result)>0:
-           for x in student_fields:
-               print(x, end='\t |')
-           print("\n-----------------------------------------------------------------")
+        if len(search_result)>0:
+               for x in student_fields:
+                   print(x, end='\t |')
+               print("\n-----------------------------------------------------------------")
 
-           for row in student_data:
-              grade = get_grade(row["UnitMark"])
-              print(row["Number"], '\t |',row["SurName"], '\t |',row["Name"], '\t |',grade)
-           print("\n")
-    else:
-          print("student of given number/name not found")
-    input("Press any key to continue")
+               for row in student_data:
+                  grade = get_grade(row["UnitMark"])
+                  print(row["Number"], '\t |',row["SurName"], '\t |',row["Name"], '\t |',grade)
+               print("\n")
+        else:
+              print("student of given number/name not found")
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
+ 
  
  
 def delete_student():
@@ -106,21 +118,23 @@ def delete_student():
     print("--- Delete Student ---")
     student_no = input("Enter student no. to delete: ")
     student_found = False
-    
-    for item in student_data.copy():
-        if len(student_data) > 0:
-           if item.get("Number")== student_no:
-              student_data.remove(item)
-              student_found = True
-              break
+    try:
+        for item in student_data.copy():
+            if len(student_data) > 0:
+               if item.get("Number")== student_no:
+                  student_data.remove(item)
+                  student_found = True
+                  break
+     
+        if student_found is True:
+           print("Student of Student No:", student_no, "deleted successfully")
+        else:
+           print("Student. not found")
+     
+        input("Press any key to continue")
+    except Exception as error:
+         print("An error occurred:", type(error).__name__, "–", error)
  
-    if student_found is True:
-       print("Student of Student No:", student_no, "deleted successfully")
-    else:
-       print("Student. not found")
- 
-    input("Press any key to continue")
-
 
 
 
