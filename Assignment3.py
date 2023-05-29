@@ -1,5 +1,7 @@
 # Student Management System
 """
+uses matplotlib and numpy for graphical representation of data
+
 Fields :- ['Number', 'SurName', 'Name', 'UnitMark']
 1. Add  Student
 2. View ALL
@@ -21,7 +23,9 @@ student_data = arr = np.empty((0,4), str)
 
 
 
- 
+"""
+Function displays all the available options for manipulation
+"""
 def display_menu():
     print("--------------------------------------")
     print(" Welcome to Student Management System")
@@ -37,7 +41,10 @@ def display_menu():
     print("9. Quit")
  
 
-      
+"""
+This function is used to add student in ndarray
+Takes student detail as input and adds the data in ndarray
+"""
 def add_student():
     print("-------------------------")
     print("Add Student Information")
@@ -66,7 +73,10 @@ def add_student():
          print("An error occurred:", type(error).__name__, "–", error)
  
  
- 
+"""
+Displays all the students that are present in ndarray
+Displays Number,Surname,Name and Grade in a line, each field separated by a tab character
+"""
 def view_students():
     global student_fields
     global student_data
@@ -87,7 +97,10 @@ def view_students():
     except Exception as error:
          print("An error occurred:", type(error).__name__, "–", error)
  
- 
+"""
+Searches and displays the student based on a search string with search being case-insensitive and partial match
+Displays all matching detail of students viz,  Number,Surname,Name and Grade in a line, each field separated by a tab character
+"""
 def search_student():
     global student_fields
     global student_data
@@ -116,8 +129,12 @@ def search_student():
         input("Press any key to continue")
     except Exception as error:
          print("An error occurred:", type(error).__name__, "–", error)
- 
- 
+
+
+"""
+Deletes a student based on the student number that is inputted by the user.
+Displays Not Found message if student with provided number doesnot exist.
+"""
 def delete_student():
     global student_data
  
@@ -144,6 +161,10 @@ def delete_student():
          print("An error occurred:", type(error).__name__, "–", error)
 
 
+"""
+Loads the data into ndarray from file, file location is inputted by the user
+If the record in file is already present in ndarray, the data from file is ignored and rest of the data are added to student list in ndarray
+"""
 def load_students():
     global student_data
     file = input("enter file location of csv file: ")
@@ -165,8 +186,13 @@ def load_students():
         input("Press any key to continue")
     except Exception as error:
          print("An error occurred:", type(error).__name__, "–", error)
-       
 
+
+"""
+Saves the data from ndarray into the excel file
+Excel file path is taken as input from the user
+If the file exists, the user is warned and given the user the option of either changing the file name, overwriting the file, or cancel the operation.
+"""
 def save_students():
     file = input("enter file location of csv file to save students: ")
     try:
@@ -193,7 +219,11 @@ def save_students():
     except Exception as error:
          print("An error occurred:", type(error).__name__, "–", error)
     
-
+"""
+Function used to save data into csv file. 
+uses Python's builtin module csv to handle CSV files.
+First parameter to the function is the file path for storing the csv file and the second parameter being the mode of operation
+"""
 def save_data(filepath,mode):
     global student_fields
     global student_data
@@ -203,6 +233,10 @@ def save_data(filepath,mode):
              writer.writerow(data)
          print("Data saved successfully")
 
+"""
+This function is used to get grade equivalent to the marks obtained
+Used Murdoch University's grade system to convert marks to grades.
+"""
 def get_grade(marks):
     if len(marks) ==0 or not marks.isnumeric():
        return "no grade"
@@ -218,7 +252,9 @@ def get_grade(marks):
          grade ="HD"
     return grade
 
-
+"""
+Displays grade distribution data in graphical view using matplotlib and numpy library
+"""
 def display_grade_distribution():
     global student_data
     Ngrade_count =0
@@ -249,7 +285,9 @@ def display_grade_distribution():
     plt.legend(title = "Grade distribution:")
     plt.show() 
         
-
+"""
+Displays marks distribution data in graphical view using matplotlib and numpy library
+"""
 def display_marks_distribution():
     global student_data
     zeroTo29markcount = 0
@@ -287,7 +325,13 @@ def display_marks_distribution():
  
     plt.bar(x, y)
     plt.show()    
-    
+
+
+"""
+Entry point of the program.
+Displays lists of all available choices
+Based on the choice input by the user, operation is performed
+"""
 while True:
     display_menu()
  

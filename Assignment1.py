@@ -16,7 +16,9 @@ student_data =[]
 
 
 
- 
+"""
+Function displays all the available options for manipulation
+"""
 def display_menu():
     print("--------------------------------------")
     print(" Welcome to Student Management System")
@@ -28,7 +30,10 @@ def display_menu():
     print("5. Quit")
  
 
-      
+"""
+This function is used to add student to the list
+Takes student detail as input and adds the data to the list
+"""
 def add_student():
     print("-------------------------")
     print("Add Student Information")
@@ -58,7 +63,10 @@ def add_student():
     except Exception as error:
          print("An error occurred:", type(error).__name__, "–", error)
  
- 
+"""
+Displays all the students that have been added to the list
+Displays Number,Surname,Name and Grade in a line, each field separated by a tab character
+"""
 def view_students():
     global student_fields
     global student_data
@@ -80,7 +88,10 @@ def view_students():
          print("An error occurred:", type(error).__name__, "–", error)
  
  
- 
+"""
+Searches and displays the student based on a search string with search being case-insensitive and partial match
+Displays all matching detail of students viz,  Number,Surname,Name and Grade in a line, each field separated by a tab character
+"""
 def search_student():
     global student_fields
     global student_data
@@ -111,7 +122,10 @@ def search_student():
          print("An error occurred:", type(error).__name__, "–", error)
  
  
- 
+"""
+Deletes a student based on the student number that is inputted by the user.
+Displays Not Found message if student with provided number doesnot exist.
+"""
 def delete_student():
     global student_data
  
@@ -138,7 +152,10 @@ def delete_student():
 
 
 
-
+"""
+This function is used to get grade equivalent to the marks obtained
+Used Murdoch University's grade system to convert marks to grades.
+"""
 def get_grade(marks):
     if len(marks) ==0 or not marks.isnumeric():
        return "no grade"
@@ -153,7 +170,12 @@ def get_grade(marks):
     elif percentage >79:
          grade ="HD"
     return grade
-         
+
+"""
+Entry point of the program.
+Displays lists of all available choices
+Based on the choice input by the user, operation is performed
+"""
 while True:
     display_menu()
  
